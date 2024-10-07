@@ -41,11 +41,17 @@ custom_css = """
         color: white !important;
         border-color: black !important;
     }
-    .st-b6 {
-        font-size: 6rem;
+    .st-ay {
+        font-size: 5rem;
+    }
+    .st-emotion-cache-1xjb298 input {
+        font-size: 1rem;
     }
     .st-emotion-cache-eq2h7m p {
         font-size: 3rem;
+    }
+    .st-emotion-cache-ml2xh6 {
+        margin-top: 50px;
     }
 </style>
 """
@@ -66,7 +72,6 @@ def record_audio(fs=16000, output_dir="audio_in", silence_threshold=2.0, min_dur
     recorded_audio = []
     silent_time = 0
 
-    print("Recording...")
     with sd.InputStream(samplerate=fs, channels=1) as stream:
         while True:
             data, overflowed = stream.read(int(fs * min_duration))
@@ -202,9 +207,11 @@ def main():
             SPK_ON=True
 
     # テキストエリアの表示
-    st.text_area("ご質問内容", value=st.session_state.question, height=200)
-    st.text_area("生成AIの回答", value=st.session_state.response, height=200)
+    st.text_area("ご質問内容", value=st.session_state.question, height=250)
+    st.text_area("生成AIの回答", value=st.session_state.response, height=500)
 
+    # テキストを先に画面に表示させてから音声を出力させるため、TTS部分を分離しフラグで管理
+    # これをボタンのif文の中に入れると発話終了まで画面が更新されない（テキスト表示がされない）
     if SPK_ON :
         print("-----------------------------")
         print("生成AIの回答を音声に変換・再生開始")
@@ -212,23 +219,11 @@ def main():
         print("生成AIの回答を音声に変換・再生修了")
         SPK_ON=False
 
-    # 2つのカラムに分割
-    col2_a, col2_b = st.columns(2)
-
-    # 各カラムに要素を配置
-    with col2_a:
-        # クリアボタン (なぜか2回押さないとクリアされない)
-        if st.button("表示クリア（会話履歴は残す）"):
-            # ボタンを押した際にセッションステートを更新
-            st.session_state.question = ""
-            st.session_state.response = ""
-
-    with col2_b:
-        if st.button("会話履歴クリア（新規に質問する場合）"):
-            st.session_state.question = ""
-            st.session_state.response = ""
-            # historyをクリアする処理
-
+    # [TBD]
+    # if st.button("会話履歴クリア（新規に質問する場合）"):
+    #     st.session_state.question = ""
+    #     st.session_state.response = ""
+    #     # historyをクリアする処理
 
 if __name__ == '__main__':
     main()
