@@ -72,6 +72,11 @@ https://github.com/u-tanick/m5stack-avatar-on-WinPC
 3. 画面上の `「ボタンを押したら質問してね」` ボタンを押し、話しかけるとVOICEVOCのずんだもん（ノーマル）の声で返事がきます。
    - 発話後に無音が2秒以上続いた時点で音声録音がストップし、対話処理に進みます。
    - 現時点では、対話履歴などの処理は実装していないため、会話は一回の応答で完結しています。
+   - 画面右上のVOICEIDを変更することで、ずんだもん（ノーマル）以外の声に変えることも可能です。
+     - VOICEVOXのスピーチID一覧
+       - https://gist.github.com/u-tanick/1e27e681461496fd8d1a8792f971b398
+     - こちらのサイトでIDの声を実際に確認できます
+       - https://voicevox.hiroshiba.jp/
 
 ![demo](img/demo.jpg)
 
