@@ -38,8 +38,13 @@ https://github.com/u-tanick/m5stack-avatar-on-WinPC
     - openai       // 生成AI用
     - requests     // REST-API呼び出し用(VOICEVOX)
     - pydub        // 音声再生用
-  - 適宜、pip install などでご準備ください。
-    - その他必要なものについては実行ファイル冒頭のimport宣言をご参照ください。
+    - など
+
+インストールコマンド例（ほか足らないものあれば適宜追加してください）
+
+''' sh
+pip install streamlit sounddevice numpy openai requests pydub scipy
+'''
 
 - 個別インストール
   - VOICEVOX
