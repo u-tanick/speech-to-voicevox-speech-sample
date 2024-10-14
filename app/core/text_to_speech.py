@@ -2,9 +2,11 @@ import requests
 from pydub import AudioSegment
 import simpleaudio as sa
 import tempfile
+import util.logger.loggingUtil as lu
 
+# 音声からテキストに変換
+@lu.loggingAOP("音声からテキストに変換")
 def text_to_speech(text, speaker_id):
-    print(speaker_id)
     
     # 音声クエリのリクエスト
     response_audio = requests.post(f"http://localhost:50021/audio_query?text={text}&speaker={speaker_id}")

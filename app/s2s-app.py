@@ -1,12 +1,13 @@
 import os
+import inspect
+import tomllib
 import streamlit as st
 from openai import OpenAI
-import tomllib
 
-from core import record_audio
-from core import chat_llm
-from core import transcribe
-from core import text_to_speech
+from core.record_audio import record_audio
+from core.chat_llm import chat_llm
+from core.transcribe import transcribe
+from core.text_to_speech import text_to_speech
 
 import util.logger.loggingUtil as lu
 import util.global_value as g
@@ -78,67 +79,68 @@ if 'response' not in st.session_state:
 
 @lu.loggingAOP("main関数の処理")
 def main():
+    try:
 
-    SPK_ON = False
+        SPK_ON = False
 
-    # UIの設定
-    st.title("音声アシスタント")
+        # UIの設定
+        st.title("音声アシスタント")
 
-    # セッションステートの初期化
-    if 'question' not in st.session_state:
-        st.session_state.question = ""
+        # セッションステートの初期化
+        if 'question' not in st.session_state:
+            st.session_state.question = ""
 
-    if 'response' not in st.session_state:
-        st.session_state.response = ""
+        if 'response' not in st.session_state:
+            st.session_state.response = ""
 
-    # 2つのカラムに分割
-    col1_a, col1_b = st.columns([3, 1])
+        # 2つのカラムに分割
+        col1_a, col1_b = st.columns([3, 1])
 
-    # 各カラムに要素を配置
-    with col1_b:
-        # スピーチID
-        speaker_id = st.number_input('VOICEID', min_value=0, max_value=80, step=1, value=3)
-    with col1_a:
-        # STT、TTSとLLMの統合
-        if st.button("ボタンを押したら質問してね"):
+        # 各カラムに要素を配置
+        with col1_b:
+            # スピーチID
+            speaker_id = st.number_input('VOICEID', min_value=0, max_value=80, step=1, value=3)
+        with col1_a:
+            # STT、TTSとLLMの統合
+            if st.button("ボタンを押したら質問してね"):
 
+                print("-----------------------------")
+                # 録音データの取得
+                speech_file = record_audio()
+                print(speech_file)
+
+                print("-----------------------------")
+                # 音声からテキストに変換
+                st.session_state.question = transcribe(speech_file)
+                print(st.session_state.question)
+
+                print("-----------------------------")
+                # テキストを使用して生成AIに質問開始
+                st.session_state.response = chat_llm(st.session_state.question)
+                print(st.session_state.response)
+                SPK_ON=True
+
+        # テキストエリアの表示
+        st.text_area("ご質問内容", value=st.session_state.question, height=250)
+        st.text_area("生成AIの回答", value=st.session_state.response, height=500)
+
+        # テキストを先に画面に表示させてから音声を出力させるため、TTS部分を分離しフラグで管理
+        # これをボタンのif文の中に入れると発話終了まで画面が更新されない（テキスト表示がされない）
+        if SPK_ON :
             print("-----------------------------")
-            # print("録音開始")
-            speech_file = record_audio()
-            print(speech_file)
-            # print("録音修了")
+            # 生成AIの回答を音声に変換・再生
+            text_to_speech(st.session_state.response, speaker_id)
+            SPK_ON=False
 
-            print("-----------------------------")
-            print("音声からテキストに変換開始")
-            st.session_state.question = transcribe(speech_file)
-            print(st.session_state.question)
-            print("音声からテキストに変換修了")
-
-            print("-----------------------------")
-            print("テキストを使用して生成AIに質問開始")
-            st.session_state.response = chat_llm(st.session_state.question)
-            print(st.session_state.response)
-            print("テキストを使用して生成AIに質問修了")
-            SPK_ON=True
-
-    # テキストエリアの表示
-    st.text_area("ご質問内容", value=st.session_state.question, height=250)
-    st.text_area("生成AIの回答", value=st.session_state.response, height=500)
-
-    # テキストを先に画面に表示させてから音声を出力させるため、TTS部分を分離しフラグで管理
-    # これをボタンのif文の中に入れると発話終了まで画面が更新されない（テキスト表示がされない）
-    if SPK_ON :
-        print("-----------------------------")
-        print("生成AIの回答を音声に変換・再生開始")
-        text_to_speech(st.session_state.response, speaker_id)
-        print("生成AIの回答を音声に変換・再生修了")
-        SPK_ON=False
-
-    # [TBD]
-    # if st.button("会話履歴クリア（新規に質問する場合）"):
-    #     st.session_state.question = ""
-    #     st.session_state.response = ""
-    #     # historyをクリアする処理
+        # [TBD]
+        # if st.button("会話履歴クリア（新規に質問する場合）"):
+        #     st.session_state.question = ""
+        #     st.session_state.response = ""
+        #     # historyをクリアする処理
+    except Exception as e:
+        file_name = os.path.basename(__file__)
+        func_name = inspect.currentframe().f_code.co_name
+        g.logger.error(f"[{file_name}][{func_name}] Caught the propagated error message : {str(e)}")
 
 if __name__ == '__main__':
     main()

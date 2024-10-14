@@ -1,5 +1,6 @@
 import util
 import util.global_value as g
+import util.logger.loggingUtil as lu
 
 # OpenAI APIの設定
 # gpt-4o用
@@ -7,7 +8,8 @@ import util.global_value as g
 MODEL_NAME = "gpt-4o-mini"
 MAX_TOKENS = 2000
 
-# OpenAI GPTにクエリを投げる
+# テキストを使用して生成AIに質問
+@lu.loggingAOP("テキストを使用して生成AIに質問")
 def chat_llm(question):
     response = g.client.chat.completions.create(
         model=MODEL_NAME,
