@@ -1,0 +1,43 @@
+# -*- coding: utf-8 -*-
+# -----------------------------------------------------------------
+# ログ出力設定ファイル
+version: 1
+formatters:
+  customFormatter:
+    format: '%(asctime)s [%(levelname)-9s][%(name)-11s] %(message)s'
+handlers:
+  consoleHandler:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: customFormatter
+    stream: ext://sys.stdout
+  applicationHandler:
+    class: logging.handlers.TimedRotatingFileHandler
+    when: D
+    level: DEBUG
+    formatter: customFormatter
+    filename: util\log\loggingUtil.log
+    encoding : 'utf-8'
+  errorHandler:
+    class: logging.handlers.TimedRotatingFileHandler
+    when: D
+    level: ERROR
+    formatter: customFormatter
+    filename: util\log\loggingUtil.log
+    encoding : 'utf-8'
+loggers:
+  console:
+    level: DEBUG
+    handlers: [consoleHandler]
+    propagate: no
+  application:
+    level: DEBUG
+    handlers: [consoleHandler,applicationHandler]
+    propagate: no
+  emergency:
+    level: DEBUG
+    handlers: [consoleHandler,errorHandler]
+    propagate: no
+root:
+  level: DEBUG
+  handlers: [consoleHandler, applicationHandler]

@@ -1,0 +1,18 @@
+2024-10-14 18:58:24,186 [DEBUG    ][application] [main.py][main] Do main!!: start
+2024-10-14 18:58:24,187 [DEBUG    ][application] [main.py][something_method] Do method!!: start
+2024-10-14 18:58:24,188 [DEBUG    ][application] [main.py][something_method] Do method!!: end
+2024-10-14 18:58:24,188 [DEBUG    ][application] [main.py][something_method] 処理時間: 0.000 s
+2024-10-14 18:58:24,189 [DEBUG    ][application] [main.py][error_method] Raise Error!!: start
+2024-10-14 18:58:24,189 [ERROR    ][application] [main.py][error_method] Exception occered in 'error_method': Error in error_method()!!!!
+2024-10-14 18:58:24,191 [ERROR    ][application] Traceback (most recent call last):
+  File "C:\Users\funky\Documents\_work\M5Stack\202410_STT-GPT-TTSアプリ\src\logging-decorator\util\loggingUtil.py", line 50, in wrapper
+    result = func(*args, **kwargs)
+  File "C:\Users\funky\Documents\_work\M5Stack\202410_STT-GPT-TTSアプリ\src\logging-decorator\main.py", line 15, in error_method
+    raise Exception("Error in error_method()!!!!")
+Exception: Error in error_method()!!!!
+
+2024-10-14 18:58:24,192 [DEBUG    ][application] [main.py][error_method] Raise Error!!: end
+2024-10-14 18:58:24,192 [DEBUG    ][application] [main.py][error_method] 処理時間: 0.003 s
+2024-10-14 18:58:24,193 [ERROR    ][application] [main.py][main] Caught Error Message : Error in error_method()!!!!
+2024-10-14 18:58:24,193 [DEBUG    ][application] [main.py][main] Do main!!: end
+2024-10-14 18:58:24,193 [DEBUG    ][application] [main.py][main] 処理時間: 0.006 s

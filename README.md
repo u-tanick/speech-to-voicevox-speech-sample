@@ -30,6 +30,9 @@ https://github.com/u-tanick/m5stack-avatar-on-WinPC
 
 ## 実行環境
 
+- Python 3.12 で動作確認済みです。
+  - Python 3.13 は、まだ対応していないライブラリがある可能性があります。
+
 - Python
   - 主なライブラリ
     - streamlit    // UI用
@@ -43,7 +46,17 @@ https://github.com/u-tanick/m5stack-avatar-on-WinPC
 インストールコマンド例（ほか足らないものあれば適宜追加してください）
 
 ''' sh
-pip install streamlit sounddevice numpy openai requests pydub scipy
+pip install streamlit
+pip install openai
+pip install sounddevice
+pip install numpy
+pip install requests
+pip install pydub
+pip install scipy
+pip install sounddevice
+pip install inspect
+pip install logging.config
+pip install functools
 '''
 
 - 個別インストール
@@ -64,11 +77,13 @@ pip install streamlit sounddevice numpy openai requests pydub scipy
   - APIキーは `OSのシステム環境変数` または `ユーザー環境変数` に設定してください。
     - キー名：OPENAI_API_KEY
 
-## 動作手順
+## 実行手順
 
 1. VOICEVOXのアプリケーションを起動します。
    - アプリを起動させた状態でREST APIサーバーも立ち上がった状態になります。
+
 2. appフォルダに移動して、以下のコマンドを実行するとブラウザが開き画面が立ち上がります。
+   - ライブラリが足らないなどで起動に失敗する場合は適宜ライブラリを追加してください。
 
     ``` sh
     streamlit run s2s-app.py &
