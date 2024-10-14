@@ -3,13 +3,16 @@ import streamlit as st
 from openai import OpenAI
 import tomllib
 
-# import core
 from core import record_audio
 from core import chat_llm
 from core import transcribe
 from core import text_to_speech
-# import util
+
+import util.logger.loggingUtil as lu
 import util.global_value as g
+
+# ロガーの初期化
+lu.init_logger("application")
 
 # 環境変数の読み込み
 OPENAI_API_KEY=os.getenv('OPENAI_API_KEY')
@@ -73,6 +76,7 @@ if 'question' not in st.session_state:
 if 'response' not in st.session_state:
     st.session_state.response = ""
 
+@lu.loggingAOP("main関数の処理")
 def main():
 
     SPK_ON = False
@@ -99,10 +103,10 @@ def main():
         if st.button("ボタンを押したら質問してね"):
 
             print("-----------------------------")
-            print("録音開始")
+            # print("録音開始")
             speech_file = record_audio()
             print(speech_file)
-            print("録音修了")
+            # print("録音修了")
 
             print("-----------------------------")
             print("音声からテキストに変換開始")

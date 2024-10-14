@@ -16,3 +16,14 @@ Exception: Error in error_method()!!!!
 2024-10-14 18:58:24,193 [ERROR    ][application] [main.py][main] Caught Error Message : Error in error_method()!!!!
 2024-10-14 18:58:24,193 [DEBUG    ][application] [main.py][main] Do main!!: end
 2024-10-14 18:58:24,193 [DEBUG    ][application] [main.py][main] 処理時間: 0.006 s
+2024-10-14 20:46:52,111 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: start
+2024-10-14 20:46:52,116 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: end
+2024-10-14 20:46:52,117 [DEBUG    ][application] [s2s-app.py][main] 処理時間: 0.003 s
+2024-10-14 20:48:52,595 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: start
+2024-10-14 20:48:52,599 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: end
+2024-10-14 20:48:52,600 [DEBUG    ][application] [s2s-app.py][main] 処理時間: 0.003 s
+2024-10-14 20:48:55,807 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: start
+2024-10-14 20:53:00,167 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: start
+2024-10-14 20:53:00,172 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: end
+2024-10-14 20:53:00,172 [DEBUG    ][application] [s2s-app.py][main] 処理時間: 0.004 s
+2024-10-14 20:53:03,628 [DEBUG    ][application] [s2s-app.py][main] main関数の処理: start

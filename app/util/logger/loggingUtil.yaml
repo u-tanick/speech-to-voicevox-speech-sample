@@ -16,14 +16,14 @@ handlers:
     when: D
     level: DEBUG
     formatter: customFormatter
-    filename: util\log\loggingUtil.log
+    filename: util/logger/log/loggingUtil.log
     encoding : 'utf-8'
   errorHandler:
     class: logging.handlers.TimedRotatingFileHandler
     when: D
     level: ERROR
     formatter: customFormatter
-    filename: util\log\loggingUtil.log
+    filename: util/logger/log/loggingUtil.log
     encoding : 'utf-8'
 loggers:
   console:

@@ -5,7 +5,11 @@ import numpy as np
 import sounddevice as sd
 from scipy.io.wavfile import write
 
+import util.logger.loggingUtil as lu
+import util.global_value as g
+
 # 録音データの取得
+lu.loggingAOP("録音データの取得")
 def record_audio(fs=16000, output_dir="audio_in", silence_threshold=2.0, min_duration=0.1, amplitude_threshold=0.01):
     audio_directory = Path.cwd() / output_dir
     audio_directory.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,7 @@
 import os
 import time
 import functools
+import logging
 import logging.config
 import inspect
 import traceback
@@ -24,7 +25,7 @@ def init_logger(logger_name):
     return g.logger
 
 
-def AOP(logText):
+def loggingAOP(logText):
     """
     ログ用デコレーター
     引数:
