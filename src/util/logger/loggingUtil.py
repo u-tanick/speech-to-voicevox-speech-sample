@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import functools
 import logging
@@ -11,13 +12,20 @@ import util.global_value as g
 # グローバルに利用するロガー（デフォルトはNone）
 g.logger = None
 
+
 def init_logger(logger_name):
     """
     ロガーの初期化
     """
     print("logger : " + logger_name)
     filename = "loggingUtil.yaml"
-    full_path = os.path.join(os.path.dirname(__file__), filename)
+    if getattr(sys, 'frozen', False):
+        # PyInstallerでバンドルされた場合
+        base_path = sys._MEIPASS
+        full_path = os.path.join(base_path, 'util', 'logger', 'loggingUtil.yaml')
+    else:
+        # 通常のスクリプト実行
+        full_path = os.path.join(os.path.dirname(__file__), filename)
     with open(full_path, "r") as file:
         config = yaml.load(file, Loader=yaml.FullLoader)
     logging.config.dictConfig(config)

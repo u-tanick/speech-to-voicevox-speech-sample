@@ -1,12 +1,12 @@
 # speech-to-voicevox-speech-sample
 
-★注意事項★現時点のバージョンでは、生成AIが長文のテキストを作成した場合、それを一括でVOICEVOXが音声ファイルに変換してしまうため、処理がかなり重くなり、場合によってPCがハングアップする可能性があります。現在音声変換の方式の改善を検討中です。現バージョンをご利用の場合、もし長文テキストが返却されたらVOICEVOXアプリを落とすなどで危険を回避いただけますでしょうか。
-
 話しかけた声を元に、生成AIで作成した回答をVOICEVOXの音声で返すサンプルです。  
 アプリケーションの実行ファイル本体は以下に格納されています。
 
-```
-app/s2s-app.py
+個別ファイルの説明はsrcフォルダにあるREADMEを参照してください。
+
+``` sh
+src/s2s-app.py ほか
 ```
 
 ## 仕組み
@@ -15,11 +15,12 @@ app/s2s-app.py
 
 ![s2s](img/s2s.jpg)
 
-- STT：音声のテキスト化
+- 音声のテキスト化
   - OpenAI Wisperを使用しています。
-- LLM：テキストを元にした生成AIとの対話
+- テキストを元にした生成AIとの対話
   - OpenAI ChatGPT-4o-mini を使用しています。
-- TTS：テキストの音声化
+- 生成AIの回答テキストを50文字程度の文章に区切る
+- テキストの音声化
   - VOICEVOXのローカルインストール版を使用しています。
 - UI
   - 入出力の内容を確認する用のUIをStreamlitで実装しています。
@@ -38,11 +39,11 @@ https://github.com/u-tanick/m5stack-avatar-on-WinPC
 - Python
   - 主なライブラリ
     - streamlit    // UI用
+    - openai       // 生成AI用
     - sounddevice  // 音声録音用
     - numpy        // 音声録音用
-    - openai       // 生成AI用
-    - requests     // REST-API呼び出し用(VOICEVOX)
     - pydub        // 音声再生用
+    - requests     // REST-API呼び出し用(VOICEVOX)
     - など
 
 インストールコマンド例（ほか足らないものあれば適宜追加してください）
@@ -52,39 +53,57 @@ pip install streamlit
 pip install openai
 pip install sounddevice
 pip install numpy
-pip install requests
 pip install pydub
+pip install pathlib
+pip install requests
 pip install scipy
-pip install sounddevice
-pip install inspect
+pip install regex
+pip install mecab
+pip install environ
+pip install logging
 pip install logging.config
-pip install functools
+pip install pyyaml
+pip install noisereduce
+pip install soundfile
+pip install demoji
 '''
 
-- 個別インストール
-  - VOICEVOX
-    - ローカルインストール版を使用します。
-      - Web APIを使用される場合は改修してください。
-    - インストール手順など
-      - https://voicevox.hiroshiba.jp/
-      - https://yuushablog.info/voicevox-inst/
-  - FFmpegのインストール手順
-    - pydub ライブラリが参照するために必要です。
-    - インストール手順など
-      - https://ffmpeg.org/download.html
-      - https://qiita.com/Tadataka_Takahashi/items/9dcb0cf308db6f5dc31b
+### ソフトウェアインストール
 
-- APIキー
-  - OpenAIのAPIキーが必要です。
-  - APIキーは `OSのシステム環境変数` または `ユーザー環境変数` に設定してください。
-    - キー名：OPENAI_API_KEY
+以下を取得しインストールします。
+
+1. ダウンロード版VOICEVOX
+   - 取得先：https://voicevox.hiroshiba.jp/
+   - 参考：インストール方法など：https://sosakubiyori.com/voicevox-introduction/
+
+2. FFmpeg
+   - 取得先：https://ffmpeg.org/download.html
+   - 参考：インストール方法など：https://jp.videoproc.com/edit-convert/how-to-download-and-install-ffmpeg.htm
+
+### 環境変数の設定
+
+以下をシステム環境変数に設定します。
+
+1. OpenAI ChatGPT, Wipsper用のAPIキー
+   - キー名
+     - OPENAI_API_KEY
+   - 値
+     - OpenAIのアカウントを作成し取得したものを設定
+     - 参考：取得手順など：https://qiita.com/kurata04/items/a10bdc44cc0d1e62dad3
+
+2. FFmpegのパス
+   - キー名
+     - Path
+   - 値の例
+     - C:\ffmpeg\bin
+     - インストールした場所に合わせて設定
 
 ## 実行手順
 
-1. VOICEVOXのアプリケーションを起動します。
+1. ダウンロード版VOICEVOXを起動します。
    - アプリを起動させた状態でREST APIサーバーも立ち上がった状態になります。
 
-2. appフォルダに移動して、以下のコマンドを実行するとブラウザが開き画面が立ち上がります。
+2. srcフォルダに移動して、以下のコマンドを実行するとブラウザが開き画面が立ち上がります。
    - ライブラリが足らないなどで起動に失敗する場合は適宜ライブラリを追加してください。
 
     ``` sh

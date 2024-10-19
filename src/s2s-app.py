@@ -7,6 +7,7 @@ from openai import OpenAI
 from core.record_audio import record_audio
 from core.chat_llm import chat_llm
 from core.transcribe import transcribe
+from core.split_text import split_text
 from core.text_to_speech import text_to_speech
 
 import util.logger.loggingUtil as lu
@@ -110,15 +111,21 @@ def main():
                 print(speech_file)
 
                 print("-----------------------------")
-                # 音声からテキストに変換
-                st.session_state.question = transcribe(speech_file)
-                print(st.session_state.question)
+                if speech_file == "":
+                    # 冒頭3秒が無音だった場合
+                    st.session_state.question = "上手く聞き取れませんでした！ \n もう一度話しかけてください。"
+                    st.session_state.response = ""
+                else:
+                    # 冒頭3秒に音声が入っていた場合
+                    # 音声からテキストに変換
+                    st.session_state.question = transcribe(speech_file)
+                    print(st.session_state.question)
 
-                print("-----------------------------")
-                # テキストを使用して生成AIに質問開始
-                st.session_state.response = chat_llm(st.session_state.question)
-                print(st.session_state.response)
-                SPK_ON=True
+                    print("-----------------------------")
+                    # テキストを使用して生成AIに質問開始
+                    st.session_state.response = chat_llm(st.session_state.question)
+                    print(st.session_state.response)
+                    SPK_ON=True
 
         # テキストエリアの表示
         st.text_area("ご質問内容", value=st.session_state.question, height=250)
@@ -128,8 +135,15 @@ def main():
         # これをボタンのif文の中に入れると発話終了まで画面が更新されない（テキスト表示がされない）
         if SPK_ON :
             print("-----------------------------")
+            # 生成AIの回答を処理しやすい長さに区分ける
+            sentences = split_text(st.session_state.response)
+
+            for sentence in sentences:
+                print(sentence)
+
+            print("-----------------------------")
             # 生成AIの回答を音声に変換・再生
-            text_to_speech(st.session_state.response, speaker_id)
+            text_to_speech(sentences, speaker_id)
             SPK_ON=False
 
         # [TBD]

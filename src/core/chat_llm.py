@@ -1,4 +1,3 @@
-import util
 import util.global_value as g
 import util.logger.loggingUtil as lu
 
