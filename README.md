@@ -50,7 +50,7 @@ https://github.com/u-tanick/m5stack-avatar-on-WinPC
 
 インストールコマンド例（ほか足らないものあれば適宜追加してください）
 
-''' sh
+``` sh
 pip install streamlit
 pip install openai
 pip install sounddevice
@@ -68,7 +68,7 @@ pip install pyyaml
 pip install noisereduce
 pip install soundfile
 pip install demoji
-'''
+```
 
 ### ソフトウェアインストール
 
